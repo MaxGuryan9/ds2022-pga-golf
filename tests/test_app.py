@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-# Add project root to Python path so we can import src
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
@@ -13,7 +12,7 @@ def test_homepage_loads():
     client = app.test_client()
     resp = client.get("/")
     assert resp.status_code == 200
-    assert b"PGA Stat Leaders" in resp.data  # or any text from your template
+    assert b"PGA Stat Leaders" in resp.data  
 
 def test_health_endpoint():
     """Test the health endpoint returns HTTP 200."""
