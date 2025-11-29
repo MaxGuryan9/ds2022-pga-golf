@@ -3,7 +3,7 @@
 from pathlib import Path
 
 import pandas as pd
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__, template_folder="../templates")
 
@@ -107,6 +107,9 @@ def index():
         leaders=leaders,
     )
 
+@app.get("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
     # For local dev; Docker will also bind to 0.0.0.0:8000
