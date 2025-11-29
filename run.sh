@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-IMAGE_NAME="pga-stats:latest"
+echo "Running smoke tests..."
+pytest tests/test_app.py tests/test_data.py
 
-# Build the Docker image
-docker build -t "$IMAGE_NAME" .
+echo "Tests passed. Building Docker image..."
+docker build -t pga-stats:latest .
 
-# Run the container, mapping port 8000 → 8000
-docker run --rm -p 8000:8000 "$IMAGE_NAME"
+docker run --rm -p 8000:8000 pga-stats:latest
