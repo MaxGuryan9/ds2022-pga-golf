@@ -2,7 +2,7 @@
 set -e
 
 echo "Running smoke tests..."
-pytest tests/test_app.py tests/test_data.py
+pytest tests/test_app.py && pytest tests/test_data.py
 
 echo "Tests passed. Building Docker image..."
 docker build -t pga-stats:latest .
