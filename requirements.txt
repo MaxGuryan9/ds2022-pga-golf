@@ -1,6 +1,8 @@
 Flask==3.0.3
 pandas==2.2.2
 requests==2.31.0
-python-dotenv==1.0.1     # only if you want environment variables
-gunicorn==21.2.0         # if you want a production WSGI server inside Docker (optional)
+python-dotenv==1.0.1    
+gunicorn==21.2.0        
+pytest==8.3.2
+
 
