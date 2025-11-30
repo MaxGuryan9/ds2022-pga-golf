@@ -15,13 +15,52 @@ This project builds a fully containerized data pipeline and Flask dashboard. Thr
 - Smoke Testing and Health Checks
 
 ### Architecture Diagrams
+
 #### Pipeline
 ![Pipeline Diagram](assets/pipeline.png)
+This pipeline shows the steps taken through the Dockerfile when you run the `./run.sh` command. 
+
 #### Flowchart
 ![Flowchart](assets/flowchart.png)
+This flowchart represents how each datapoint is represented on the dashboard based on the users input.
+
+#### Project Folder Tree
+ds2022-pga-golf/
+│
+├── Dockerfile                   # Defines build-run environment; runs the pipeline
+├── run.sh                       # One-command build + run (no cache)
+├── requirements.txt             # Python dependencies
+├── README.md                    # Full project write-up
+├── LICENSE                      # MIT license
+├── .gitignore                   # Excludes local env + data dirs
+├── .env.example                 # Example environment variables (no secrets)
+│
+├── assets/                      # Static documentation assets
+│   ├── pipeline.png             # Pipeline diagram
+│   ├── flowchart.png            # App flowchart
+│   └── dashboard.png            # Screenshot of dashboard
+│
+├── src/                         # All application + pipeline code
+│   ├── app.py                   # Flask server
+│   ├── download_stats.py        # Download raw PGA stats
+│   ├── parse_stats.py           # Normalize + clean data
+│   ├── build_master.py          # Merge into master dataset
+│
+├── templates/
+│   └── index.html               # Dashboard page template (Jinja2)
+│
+├── tests/                       # Smoke tests (pytest)
+│   ├── test_data.py             # Dataset validation tests
+│   └── test_app.py              # Flask app tests
+│
+└── data/                        # Created only inside Docker container
+    ├── raw/                     # Raw CSVs from PGA API
+    ├── intermediate/            # Cleaned intermediate CSVs
+    └── processed/               # Final master_player_seasons.csv
+
 #### Data Sources
 All PGA Data came from the PGA's official CSV API:
-https://www.pgatour.com/api/stats-download?timePeriod=THROUGH_EVENT&tourCode=R&statsId=<ID>&year=<YEAR>
+"https://www.pgatour.com/api/stats-download?timePeriod=THROUGH_EVENT&tourCode=R&statsId=<ID>&year=<YEAR>"
 
 #### Stats Included
 - Strokes Gained (Total, OTT, Approach, ARG, Putting)
@@ -36,4 +75,19 @@ https://www.pgatour.com/api/stats-download?timePeriod=THROUGH_EVENT&tourCode=R&s
 This project uses publicly available PGA TOUR data exclusively for educational and non-commercial use.
 All PGA data is © PGA TOUR
 
+## 3. How to Run with Docker (Local)
+In your terminal:
+```
+./run.sh
+```
+This runs:
 
+```python
+#!/usr/bin/env bash
+docker build -t pga-stats:latest .
+
+docker run --rm -p 8000:8000 pga-stats:latest
+
+curl http://localhost:8000/health
+
+```
