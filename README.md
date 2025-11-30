@@ -25,6 +25,7 @@ This pipeline shows the steps taken through the Dockerfile when you run the `./r
 This flowchart represents how each datapoint is represented on the dashboard based on the users input.
 
 #### Project Folder Tree
+```
 ds2022-pga-golf/
 │
 ├── Dockerfile                   # Defines build-run environment; runs the pipeline
@@ -57,6 +58,8 @@ ds2022-pga-golf/
     ├── raw/                     # Raw CSVs from PGA API
     ├── intermediate/            # Cleaned intermediate CSVs
     └── processed/               # Final master_player_seasons.csv
+
+```
 
 #### Data Sources
 All PGA Data came from the PGA's official CSV API:
