@@ -8,117 +8,230 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #232d4b;
+      --panel: #1d2540;
+      --panel-alt: #1b2442;
+      --accent: #e57200;
+      --text: #f1f1ef;
+      --muted: rgba(241, 241, 239, 0.7);
+      --border: rgba(241, 241, 239, 0.08);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #232d4b;
-      color: #F1F1EF;
+      background: radial-gradient(circle at 20% 20%, rgba(229, 114, 0, 0.12), transparent 35%),
+                  radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.06), transparent 30%),
+                  var(--bg);
+      color: var(--text);
       margin: 0;
-      padding: 2rem;
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem 3rem;
     }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
     h1 {
-      margin-bottom: 0.5rem;
-      color: #e57200;
+      margin: 0;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
     }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(229, 114, 0, 0.15);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid rgba(229, 114, 0, 0.35);
+    }
+
     .subtitle {
-      color: #F1F1EF;
-      margin-bottom: 1.5rem;
+      color: var(--muted);
+      margin: 0;
+      font-size: 1rem;
+      max-width: 720px;
+      line-height: 1.5;
     }
-    .year-select {
-      margin-bottom: 1.5rem;
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 1.5rem;
     }
+
     label {
       font-weight: 600;
+      color: var(--text);
     }
+
     select {
-      background: #1d2540;
-      color: #F1F1EF;
-      border: 1px solid rgba(241, 241, 239, 0.5);
-      border-radius: 6px;
-      padding: 0.4rem 0.6rem;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid rgba(241, 241, 239, 0.2);
+      border-radius: 10px;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     select:focus {
-      outline: 2px solid #e57200;
-      outline-offset: 2px;
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(229, 114, 0, 0.25);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      background: #1d2540;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid rgba(241, 241, 239, 0.15);
+
+    .panel {
+      background: linear-gradient(135deg, var(--panel), var(--panel-alt));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
     }
-    th, td {
-      padding: 0.75rem 1rem;
-      text-align: left;
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
     }
-    th {
-      background: #28345a;
+
+    .card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--muted);
       font-weight: 600;
-      border-bottom: 2px solid #e57200;
+      letter-spacing: 0.01em;
     }
-    tr:nth-child(even) {
-      background: #1f2a4b;
+
+    .leader {
+      color: var(--text);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
-    tr:nth-child(odd) {
-      background: #1b2442;
+
+    .value {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.95rem;
     }
-    tr + tr td {
-      border-top: 1px solid rgba(241, 241, 239, 0.08);
+
+    .divider {
+      margin: 0.5rem 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      border: none;
     }
-    .stat-name {
-      font-weight: 500;
+
+    footer {
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
     }
-    .player-name {
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--muted);
       font-weight: 600;
-      color: #e57200;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 1.5rem 1rem 2rem; }
+      .controls { flex-direction: column; align-items: flex-start; }
+      .panel { padding: 1rem; }
     }
   </style>
 </head>
 <body>
-  <h1>PGA Stat Leaders</h1>
-  <div class="subtitle">
-    Season {{ year }} – Top player in each category
+  <div class="page">
+    <header class="header">
+      <h1>
+        PGA Stat Leaders
+        <span class="pill">Season {{ year }}</span>
+      </h1>
+      <p class="subtitle">Top player in each category. Switch seasons to see who led specific stats.</p>
+      <form class="controls" method="get" action="/">
+        <label for="year">Season</label>
+        <select id="year" name="year" onchange="this.form.submit()">
+          {% for y in years %}
+          <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+        </select>
+        <noscript>
+          <button type="submit">Go</button>
+        </noscript>
+      </form>
+    </header>
+
+    <section class="panel">
+      <div class="grid">
+        {% for row in leaders %}
+        <div class="card">
+          <h3>{{ row.stat_label }}</h3>
+          <hr class="divider" />
+          <div class="leader">{{ row.player_name }}</div>
+          <div class="value">
+            {% if row.stat_label == "Money Earned" %}
+              {{ row.value }}
+            {% elif row.value is number %}
+              {{ "%.3f"|format(row.value) }}
+            {% else %}
+              {{ row.value }}
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <footer>
+      <span class="chip">Data: PGA TOUR CSV API</span>
+      <span class="chip">View: Flask + Jinja</span>
+    </footer>
   </div>
-
-  <form class="year-select" method="get" action="/">
-    <label for="year">Choose season:</label>
-    <select id="year" name="year" onchange="this.form.submit()">
-      {% for y in years %}
-      <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
-      {% endfor %}
-    </select>
-    <noscript>
-      <button type="submit">Go</button>
-    </noscript>
-  </form>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>Leader</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for row in leaders %}
-      <tr>
-        <td class="stat-name">{{ row.stat_label }}</td>
-        <td class="player-name">{{ row.player_name }}</td>
-        <td>
-          {% if row.stat_label == "Money Earned" %}
-            {{ row.value }}
-          {% elif row.value is number %}
-            {{ "%.3f"|format(row.value) }}
-          {% else %}
-            {{ row.value }}
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 </body>
 </html>
