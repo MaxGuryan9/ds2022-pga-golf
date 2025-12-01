@@ -39,7 +39,10 @@ ds2022-pga-golf/
 ├── assets/                      # Static documentation assets
 │   ├── pipeline.png             # Pipeline diagram
 │   ├── flowchart.png            # App flowchart
-│   └── dashboard.png            # Screenshot of dashboard
+│   ├── dashboard.png            # Screenshot of dashboard
+│   ├── second_dashboard.png     # NEW: Secondary dashboard screenshot
+│   ├── app_test.png             # NEW: Screenshot for app smoke test
+│   ├── data_test.png            # NEW: Screenshot for data pipeline test
 │
 ├── src/                         # All application + pipeline code
 │   ├── app.py                   # Flask server
@@ -48,7 +51,8 @@ ds2022-pga-golf/
 │   ├── build_master.py          # Merge into master dataset
 │
 ├── templates/
-│   └── index.html               # Dashboard page template (Jinja2)
+│   ├── index.html               # Dashboard page template (Jinja2)
+│   └── category.html            # Category-specific page template
 │
 ├── tests/                       # Smoke tests (pytest)
 │   ├── test_data.py             # Dataset validation tests
@@ -89,11 +93,32 @@ This runs `run.sh` which contains:
 
 ```bash
 #!/usr/bin/env bash
+set -euo pipefail
+
+PORT="${PORT:-8000}"
+
+echo "Ensuring port ${PORT} is free..."
+if lsof -tiTCP:"${PORT}" -sTCP:LISTEN >/dev/null 2>&1; then
+  echo "Port ${PORT} in use. Attempting to terminate listener(s)..."
+  pids=$(lsof -tiTCP:"${PORT}" -sTCP:LISTEN)
+  kill ${pids}
+  sleep 1
+fi
+
+if lsof -tiTCP:"${PORT}" -sTCP:LISTEN >/dev/null 2>&1; then
+  echo "Port ${PORT} is still in use. Please free it manually and rerun." >&2
+  exit 1
+fi
+
+echo "Building image..."
 docker build -t pga-stats:latest .
 
-docker run --rm -p 8000:8000 pga-stats:latest
+echo "Starting container on port ${PORT}..."
+docker run --rm -p "${PORT}:8000" pga-stats:latest
 
-curl http://localhost:8000/health
+echo "Health check..."
+curl "http://localhost:${PORT}/health"
+
 
 ```
 ## 4. Design Decisions
