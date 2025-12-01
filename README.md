@@ -82,12 +82,12 @@ All PGA data is © PGA TOUR
 
 ## 3. How to Run with Docker (Local)
 In your terminal paste:
-```
+```bash
 ./run.sh
 ```
 This runs `run.sh` which contains:
 
-```python
+```bash
 #!/usr/bin/env bash
 docker build -t pga-stats:latest .
 
@@ -117,4 +117,49 @@ There is no handling of private or sensitive user data in this project. The data
 I have included `.env.example` and `.gitignore` which will keep secrets out of the repo. However, the current project does not require things like API keys, so there are no secrets. 
 ### Ops
 **INCLUDE TEXT HERE**
+
+## 5. Results and Evaluation
+### Testing and Validation
+There are two external testing python scripts, `test_data.py` and `test_app.py`. Each of which helps catch early issues and acts as a health check for the entire pipeline. These tests can be found in the `tests` folder. 
+
+#### Data Tests
+- Verifies the existence and non-emptiness of the data set
+- Confirms the presence of expected columns
+- Ensures all expected years are included
+- Confirms correctness of the derived metric `sg_tee_to_green`
+Run this in your terminal:
+```bash
+./tests/test_data.py
+```
+If the test was successful, this is the message you should receive in your terminal:
+![Data Test](assets/data_test.png)
+If there are errors, you will receive a message pinpointing what and where the error is.
+
+#### App Test
+- Confirms that the homepage loads with HTTP 200
+- Verifies that season-specific routes return valid responses
+- Ensures no unexpected server errors occurred
+Run this in your terminal
+
+```bash
+./tests/test_app.py
+```
+
+If the test was successful, this is the message you should receive in your terminal:
+![App Test](assets/app_test.png)
+If there are errors, you will receive a message pinpointing what and where the error is.
+
+### Frontend Dashboard 
+![Dashboard](assests/dashboard.png)
+After running the `run.sh` pipeline and clicking on the local host port, this is what the dashboard should look like.
+
+### Health Check
+After running the `run.sh` pipeline, open a new terminal, cd into `ds2022-pga-golf` and run the following code:
+```bash
+curl http://localhost:8000/health
+```
+You should get a response like the one below. This means that the Flask App dashboard is running.
+```json
+{"status":"ok"}
+```
 
