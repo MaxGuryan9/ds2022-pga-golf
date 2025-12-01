@@ -150,7 +150,7 @@ If the test was successful, this is the message you should receive in your termi
 If there are errors, you will receive a message pinpointing what and where the error is.
 
 ### Frontend Dashboard 
-![Dashboard](assests/dashboard.png)
+![Dashboard](assets/dashboard.png)
 After running the `run.sh` pipeline and clicking on the local host port, this is what the dashboard should look like.
 
 ### Health Check
