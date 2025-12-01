@@ -95,6 +95,7 @@ def index():
                 "stat_label": label,
                 "player_name": row["player_name"],
                 "value": value,
+                "col": col,
             }
         )
 
@@ -107,6 +108,61 @@ def index():
         leaders=leaders,
     )
 
+
+@app.route("/category/<string:category>")
+def category_view(category: str):
+    """
+    Show full rankings for a single stat in a given year.
+    """
+    default_year = int(df["year"].max())
+    year = request.args.get("year", default=default_year, type=int)
+
+    stat_def = next((s for s in STAT_DEFS if s["col"] == category), None)
+    if not stat_def:
+        return f"Unknown category '{category}'", 404
+
+    subset = df[df["year"] == year]
+    if subset.empty or category not in subset.columns:
+        return f"No data available for {category} in {year}", 404
+
+    series = subset[category].dropna()
+    if series.empty:
+        return f"No values for {category} in {year}", 404
+
+    ascending = not stat_def["higher_is_better"]
+    ordered = subset.loc[series.index].copy()
+    ordered = ordered.sort_values(by=category, ascending=ascending)
+    ordered["rank"] = range(1, len(ordered) + 1)
+
+    # Format values for display
+    def fmt(value):
+        if category == "money_earned" and pd.notna(value):
+            return f"${value:,.0f}"
+        if pd.notna(value) and isinstance(value, (int, float)):
+            return f"{value:.3f}"
+        return value if pd.notna(value) else "N/A"
+
+    rows = [
+        {
+            "rank": int(row["rank"]),
+            "player_name": row["player_name"],
+            "value": fmt(row[category]),
+        }
+        for _, row in ordered.iterrows()
+    ]
+
+    years_available = sorted(df["year"].unique())
+
+    return render_template(
+        "category.html",
+        year=year,
+        years=years_available,
+        stat_label=stat_def["label"],
+        category=category,
+        rows=rows,
+    )
+
+
 @app.get("/health")
 def health():
     return jsonify({"status": "ok"}), 200
@@ -114,4 +170,3 @@ def health():
 if __name__ == "__main__":
     # For local dev; Docker will also bind to 0.0.0.0:8000
     app.run(host="0.0.0.0", port=8000, debug=False)
-
