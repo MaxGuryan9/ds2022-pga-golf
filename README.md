@@ -99,3 +99,22 @@ curl http://localhost:8000/health
 ## 4. Design Decisions
 ### Why this concept?
 There were certain limitations to how I would be able to download the CSV files because I needed to compile multiple CSVs, make sure they were all formatted the right way, and merge them together without losing data. With these parameters in mind, there were only a few options that I had. First, instead of using the PGA TOUR CSV API I could've scraped the PGA TOUR webpages to collect stats, but this method is weak and violates the PGA TOUR's rules and regulations. Scraping webpages is brittle because one small change in the HTML script of the website can break the code, forcing you to parse through the HTML script, find the change(s), and adjust the code accordingly. Using the PGA TOUR CSV API is preferred because it returns a readable CSV file, API endpoints change significantly less frequently than webpage HTMLs, making it less likely that the code will break. Looking bigger picture, this method is a better fit for reproducible Docker builds, which is a key component of this project. Another concept that could've been used was SQLite. A SQLite database could've been created housing tables like `raw_stats`, `intermediate_stats`, and `master_stats`. The downloaded CSVs would be inserted into the database, and SQL queries could've been used to complete all of the functions that Pandas completed. This could've been a viable option, but it comes with unnecessary overhead for a project of this size. The master CSV file is only about $1000$ rows, which is relatively small. If the CSV file were larger in size, SQLite would've been a better choice, but in this instance, there was only added complexity and no added efficiency. Next, a Flask App was used to create the dashboard because that was the only method we learned. I am sure that there are other ways to end up with the same dashboard, or something better, but I decided to stick with what I was familiar with, as this is my first project of this size. Finally, Docker was chosen over Apptainer as the method of containerization because this project runs locally instead of on an HPC cluster. Docker is pretty standard for use cases like this one. However, if this project were to be done on UVA's HPC cluster, then Apptainer would be a better choice because it is a very effective containerization method for rootless multi-user systems like HPC clusters. 
+
+### Tradeoffs
+#### Build-time vs runtime pipeline
+I chose to run `download_stats.py`, `parse_stats.py`, and `build_master.py` inside the Docker build. This was done because it allows anyone to run the `run.sh` pipeline in its entirety on any device or OS. The size of the git repo is smaller because no CSV files are housed inside it, which leads to slow clones. Additionally, running these scripts inside the Docker build allows for one singular command to initiate and complete the entire project. One of the major tradeoffs of this is that the time to build the Docker image and the size of the Docker image are increased. However, for this project, the size of the dataset is relatively small, so this increase is relatively inconsequential.
+#### Simplicity
+As I mentioned above, I chose to use a Flask App for the frontend dashboard. Flask Apps are great because they have a very low level of complexity, which makes it easier for me to create. This also keeps the focus on the data-pipeline aspect of this project, which is the main goal of this project. There are downsides to this choice. On the users end, the dashboard is less interactive and oversimplified. I made this choice because Flask Apps were the only thing that we had worked with so far. This was my first project of this magnitude and I tried to keep things as simple as possible.  
+
+### Security and Privacy
+#### Data Sensitivity and privacy
+There is no handling of private or sensitive user data in this project. The dataset consists completely of public performance statistics of professional golfers.
+- All data comes from a public source: PGA TOUR stats
+- There are no user accounts
+- There is no need for PII since all information in public
+  
+#### Secrets and environment variables
+I have included `.env.example` and `.gitignore` which will keep secrets out of the repo. However, the current project does not require things like API keys, so there are no secrets. 
+### Ops
+**INCLUDE TEXT HERE**
+
