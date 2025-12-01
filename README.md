@@ -162,4 +162,8 @@ You should get a response like the one below. This means that the Flask App dash
 ```json
 {"status":"ok"}
 ```
+## 6. What's Next
+This project is very simple, meaning that there are many ways that we can make this more complex. Starting on the dataset pipeline side, adding more years to the master_dataset would enhance this project. In order to keep this project's image relatively small, only use data from 2022-2025 was included. Expanding the dataset to include values from years prior to 2022 creates a more comprehensive dataset that could be used to analyze the relationship between a golfer's success and the part(s) of their game that are better than the rest. On the Flask App dashboard side of this project, giving users the ability to compare two players across all metrics would add complexity and practicality to this project. Continuing on with the idea that this dataset could be used to show the relationship between a golfer's success and the part(s) of their game that are better than the rest. The success of a golfer could be quantified through either money earned or points earned and compared to each specific strokes gained (SG) category. After EDA (exploratory data analysis), regression models, and potentially predictive models, this data could be used to determine the likelihood of a players success based on the their performance in each SG category. 
 
+## 7. Links
+**GitHub Repo:** [link](https://github.com/MaxGuryan9/ds2022-pga-golf)
