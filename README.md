@@ -190,3 +190,8 @@ This project is very simple, meaning that there are many ways that we can make t
 
 ## 7. Links
 **GitHub Repo:** [link](https://github.com/MaxGuryan9/ds2022-pga-golf)
+
+## 8. License and Credits
+
+OpenAI. (2025). ChatGPT (GPT-5.1) [Large language model].
+Retrieved from https://chat.openai.com/
