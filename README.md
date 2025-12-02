@@ -118,8 +118,6 @@ docker run --rm -p "${PORT}:8000" pga-stats:latest
 
 echo "Health check..."
 curl "http://localhost:${PORT}/health"
-
-
 ```
 ## 4. Design Decisions
 ### Why this concept?
@@ -140,8 +138,7 @@ There is no handling of private or sensitive user data in this project. The data
   
 #### Secrets and environment variables
 I have included `.env.example` and `.gitignore` which will keep secrets out of the repo. However, the current project does not require things like API keys, so there are no secrets. 
-### Ops
-**INCLUDE TEXT HERE**
+
 
 ## 5. Results and Evaluation
 ### Testing and Validation
@@ -174,9 +171,13 @@ If the test was successful, this is the message you should receive in your termi
 ![App Test](assets/app_test.png)
 If there are errors, you will receive a message pinpointing what and where the error is.
 
-### Frontend Dashboard 
+### Primary Dashboard  
 ![Dashboard](assets/dashboard.png)
 After running the `run.sh` pipeline and clicking on the local host port, this is what the dashboard should look like.
+
+### Secondary Dashboard
+![Second Dashboard](assets/second_dashboard.png)
+If you want to inspect the entire list of players, ranked from best to worst, on a given stat in a given year, click on the icon and this is an example of what will show up.
 
 ### Health Check
 After running the `run.sh` pipeline, open a new terminal, cd into `ds2022-pga-golf` and run the following code:
