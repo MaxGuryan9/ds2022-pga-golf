@@ -18,11 +18,7 @@ This project builds a fully containerized data pipeline and Flask dashboard. Thr
 
 #### Pipeline
 ![Pipeline Diagram](assets/pipeline.png)
-This pipeline shows the steps taken through the Dockerfile when you run the `./run.sh` command. 
-
-#### Flowchart
-![Flowchart](assets/flowchart.png)
-This flowchart represents how each datapoint is represented on the dashboard based on the users input.
+This pipeline shows the steps taken when you run the `./run.sh` command and interact with the dashboard. 
 
 #### Project Folder Tree
 ```
